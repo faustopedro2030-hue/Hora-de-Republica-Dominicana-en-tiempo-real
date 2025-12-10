@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hora Dominicana</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            background-image: url("https://upload.wikimedia.org/wikipedia/commons/9/9f/Flag_of_the_Dominican_Republic.svg");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px black;
+        }
+
+        .clock {
+            font-size: 6rem;
+            font-weight: bold;
+            padding: 20px 40px;
+            border: 4px solid white;
+            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            text-shadow: 0 0 15px black;
+        }
+
+        .ampm {
+            font-size: 2rem;
+            margin-top: 10px;
+            font-weight: bold;
+            text-shadow: 0 0 10px black;
+        }
+
+        .sub {
+            margin-top: 20px;
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <div class="content">
+        <h1 class="title">Hora en República Dominicana</h1>
+        <div id="clock" class="clock">00:00:00</div>
+        <div id="ampm" class="ampm">AM</div>
+        <p class="sub">🇩🇴 Tiempo oficial de RD (GMT-4)</p>
+    </div>
+
+    <script>
+        function updateRDTime() {
+            const options = { timeZone: "America/Santo_Domingo" };
+            let now = new Date(new Date().toLocaleString("en-US", options));
+
+            // SUMAR 1 HORA EXTRA (porque tú así lo quieres)
+            now.setHours(now.getHours() + 1);
+
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, "0");
+            const seconds = String(now.getSeconds()).padStart(2, "0");
+
+            // AM / PM
+            const ampm = hours >= 12 ? "PM" : "AM";
+
+            // Convertir a formato 12 horas
+            hours = hours % 12;
+            hours = hours ? hours : 12; // si es 0 → 12
+
+            const hh = String(hours).padStart(2, "0");
+
+            document.getElementById("clock").innerText = `${hh}:${minutes}:${seconds}`;
+            document.getElementById("ampm").innerText = ampm;
+        }
+
+        setInterval(updateRDTime, 1000);
+        updateRDTime();
+    </script>
+
+</body>
+</html>
